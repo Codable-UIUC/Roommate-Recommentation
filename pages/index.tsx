@@ -68,7 +68,7 @@ export default function Home() {
       <ParticlesWrapper>
         <div className={styles.container}>
           <Head>
-            <title>Pet Finder Project</title>
+            <title>Roommie</title>
             <meta name="description" content="yay" />
             <link rel="icon" href="/cat.ico" type="image/x-icon" />
           </Head>
