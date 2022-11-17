@@ -9,10 +9,8 @@ import RadioGroup from "../components/RadioGroup";
 let FRONT_URL = "http://localhost:3000";
 
 if (typeof window !== "undefined") {
-   FRONT_URL = window.location.origin;
+  FRONT_URL = window.location.origin;
 }
-
-
 
 //const FRONT_URL = "http://localhost:3000/api/hello"
 // const FRONT_URL = "https://pet-finder-zeta.vercel.app//api/hello"
@@ -27,12 +25,10 @@ export default function Home() {
   const [type, setType] = useState(null);
   const [health, setHealth] = useState(null);
   const [result, setResult] = useState<any>(null);
-  const [loading, setLoading] =useState<boolean>(false)
-
-
+  const [loading, setLoading] = useState<boolean>(false);
 
   async function handleClick() {
-    setLoading(true)
+    setLoading(true);
     const json = JSON.stringify({
       age,
       type,
@@ -47,148 +43,125 @@ export default function Home() {
       method: "post",
       body: json,
     })
-    .then (async (res) => {
-      const result = await res.json()
-      console.log("결과값: " + result);
-      setLoading(false)
-      setResult(result)
-    })
-    .catch((e) => {
-      console.log(e);
-    })
-
-    // response.json().then((body: any) => {
-
-      
-    //   setResult(body);
-    // });
+      .then(async (res) => {
+        const result = await res.json();
+        console.log("결과값: " + result);
+        setLoading(false);
+        setResult(result);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
   return (
     <>
       <ParticlesWrapper>
         <div className={styles.container}>
           <Head>
-            <title>Roommie</title>
+            <title>Roomie</title>
             <meta name="description" content="yay" />
-            <link rel="icon" href="/cat.ico" type="image/x-icon" />
+            <link rel="icon" href="/house.ico" type="image/x-icon" />
           </Head>
 
           <main className={styles.main}>
             <NavBar />
 
-            <p className={styles.description}>
-              Contributors:{" "}
-              <code className={styles.code}>김채훈, 박창훈, 서상혁</code>
-            </p>
-
-            <h2 className="input">Inputs</h2>
-            <label htmlFor="myfile">Select a file:</label>
+            <br />
+            <label className={styles.question}>Name</label>
             <input
-              name="myfile"
-              type="file"
-              accept=".png, .jpg, .jpeg"
-              onChange={(e) => {
-                const reader = new FileReader();
-                setData(reader);
-
-                const file: any = e.target.files;
-                if (file[0]) {
-                  reader.readAsArrayBuffer(file[0]);
-                }
-              }}
+              type="text"
+              onChange={(e) => {}}
+              placeholder="이름을 입력해주세요"
             />
             <br />
 
-            <p>Age</p>
+            <label className={styles.question}>Age</label>
+            <RadioGroup
+              stringArray={["18-20", "21-23", "24-26", "27 +"]}
+              setIndex={setIsVaccinated}
+              name={"age"}
+            />
+            <br />
+
+            <label className={styles.question}>MBTI</label>
+            <RadioGroup
+              stringArray={["E", "I", "not sure"]}
+              setIndex={setIsVaccinated}
+              name={"MBTI"}
+            />
+            <br />
+            <label className={styles.question}>Major</label>
+            <RadioGroup
+              stringArray={["LAS", "BUSINESS", "ENGINEERING", "OTHER"]}
+              setIndex={setIsSterilized}
+              name={"Major"}
+            />
+            <br />
+            <label className={styles.question}>Gender</label>
+            <RadioGroup
+              stringArray={["Male", "Female"]}
+              setIndex={setIsDewormed}
+              name={"Gender"}
+            />
+            <br />
+            <label className={styles.question}> Morning / Night Person</label>
+            <RadioGroup
+              stringArray={["Morning", "Night"]}
+              setIndex={setType}
+              name={"morning/night"}
+            />
+            <br />
+            <label className={styles.question}>
+              {" "}
+              친구 데려오는 여부 일주일에 몇회..?
+            </label>
             <input
               type="number"
               onChange={(e) => {
                 setAge(parseInt(e.target.value));
               }}
-              placeholder="Months"
+              placeholder="invite"
             />
-
+            <br />
+            <label className={styles.question}> 좋아하는 음식 </label>
+            <RadioGroup
+              stringArray={["한식", "중식", "양식"]}
+              setIndex={setHealth}
+              name={"food"}
+            />
             <br />
 
-            <label> Check if Vaccinated</label>
-
+            <label className={styles.question}> 학년 </label>
             <RadioGroup
-              stringArray={["yes", "no", "not sure"]}
-              setIndex={setIsVaccinated}
-              name={"Vaccinated"}
-            />
-
-            <label htmlFor="vehicle2"> Check if Sterilized</label>
-            <RadioGroup
-              stringArray={["yes", "no", "not sure"]}
-              setIndex={setIsSterilized}
-              name={"Sterialized"}
-            />
-
-            <label htmlFor="vehicle3"> Dewormed</label>
-            <RadioGroup
-              stringArray={["yes", "no", "not sure"]}
-              setIndex={setIsDewormed}
-              name={"Dewormed"}
-            />
-
-            <label htmlFor="vehicle3"> Type</label>
-            <RadioGroup
-              stringArray={["Dog", "Cat"]}
-              setIndex={setType}
-              name={"Type"}
-            />
-            <label htmlFor="vehicle3"> Gender</label>
-            <RadioGroup
-              stringArray={["Male", "Female", "Other"]}
-              setIndex={setGender}
-              name={"Gender"}
-            />
-            <label htmlFor="vehicle3"> Health</label>
-            <RadioGroup
-              stringArray={["healty", "bad", "very bad"]}
+              stringArray={[
+                "Freshman",
+                "Sophomore",
+                "Junior",
+                "Senior",
+                "Grad",
+              ]}
               setIndex={setHealth}
-              name={"Health"}
+              name={"year"}
+            />
+            <br />
+            <label className={styles.question}> 종교 </label>
+            <RadioGroup
+              stringArray={["기속교", "천주교", "불교", "무교"]}
+              setIndex={setHealth}
+              name={"religion"}
             />
 
             <button onClick={handleClick}> Send </button>
 
             <br />
 
-            {loading ? (
-              <>
-                <h2 className={styles.description}>
-                로딩중...
-                </h2>
-                <p>Sending request to {FRONT_URL}</p>
-                </>
-            )  : null}
-            {result ? (
-              <h2
-                className={styles.description}
-              >{`Pet Adoption Category : ${result}`}</h2>
-            ): null}
-
-            <br />
-
-            <h2>Reference</h2>
-            <div className={styles.grid}>
-              <a className={styles.card}>
-                <h2>Implementation &rarr;</h2>
-                <p>Python, TypeScript, Tensorflow</p>
-              </a>
-
-              <a className={styles.card}>
-                <h2>Model &rarr;</h2>
-                <p>CNN</p>
-                <p>XGBoost</p>
-              </a>
-            </div>
+          
+          
           </main>
 
-          <footer className={styles.footer}>
+          {/* <footer className={styles.footer}>
             <p> Powered by Codable UIUC</p>
-          </footer>
+          </footer> */}
         </div>
       </ParticlesWrapper>
     </>

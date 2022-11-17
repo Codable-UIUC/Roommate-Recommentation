@@ -25,7 +25,7 @@ const particlesLoaded = useCallback(async (container: any) => {
     options={{
       background: {
           color: {
-              value: "#000000",
+              value: "#C1D5DD",
           },
       },
       fpsLimit: 60,
@@ -35,10 +35,10 @@ const particlesLoaded = useCallback(async (container: any) => {
                   enable: false,
                   mode: "repulse",
               },
-              onHover: {
-                  enable: true,
-                  mode: ["grab", "bubble"],
-              },
+            //   onHover: {
+            //       enable: true,
+            //       mode: ["grab", "bubble"],
+            //   },
               resize: true,
           },
           modes: {
@@ -58,7 +58,7 @@ const particlesLoaded = useCallback(async (container: any) => {
           links: {
               color: "#ffffff",
               distance: 150,
-              enable: true,
+              enable: false,
               opacity: 0.5,
               width: 1,
           },
@@ -71,13 +71,13 @@ const particlesLoaded = useCallback(async (container: any) => {
                   default: "bounce",
               },
               random: false,
-              speed: 1,
+              speed: 0.3,
               straight: false,
           },
           number: {
               density: {
                   enable: true,
-                  area: 1000,
+                  area: 800,
               },
               value: 80,
           },
@@ -88,7 +88,7 @@ const particlesLoaded = useCallback(async (container: any) => {
               type: "circle",
           },
           size: {
-              value: { min: 1, max: 5 },
+              value: { min: 1, max: 3 },
           },
       },
       detectRetina: true,
