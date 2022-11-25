@@ -113,13 +113,12 @@ export const findMatchUsers = async (id: string) => {
   let users = [];
   try {
     const result = await matchCollection.findOne({ _id: new ObjectId(id) });
-    console.log(result?.match)
+  
     const query_strings = result?.match.map((id : string) => {
       return new ObjectId(id)
     })
 
-     await detailCollection.find({_id: query_strings}).forEach((e:any) => {
-      console.log(e)
+     await detailCollection.find({_id: {$in :query_strings}}).forEach((e:any) => {
       users.push(e)
     });
   } catch (e) {

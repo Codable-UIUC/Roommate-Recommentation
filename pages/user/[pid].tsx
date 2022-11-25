@@ -25,19 +25,36 @@ export async function getServerSideProps({req , res} : any) {
   const id = url.split('/')[2]
 
   const result :any = await findMatchUsers(id);
-  console.log(result)
+
+  const contents = result.map((elem : any) => {
+    return {id : elem._id.toString(), content: elem.content}
+  })
   
   
   return {
-    props: {}, // will be passed to the page component as props
+    props: {contents}, // will be passed to the page component as props
   }
 }
 
 
-export default function ID() {
+export default function ID({contents} : any) {
   const router = useRouter();
   const {pid}: any = router.query
   const [match, setMatch] = useState([])
+
+
+  const map = ()=> {
+    const yo = contents.map((e : any)=> {
+      return (
+        <div>
+          <h1>{e.id}</h1>
+          <h1>{e.content}</h1>
+        </div>
+      )
+    })
+
+    return yo
+  }
 
   async function handleClickMatch () {
     
@@ -55,7 +72,11 @@ export default function ID() {
         <NavBar />
         <h1>{pid}</h1>
 
+
+
         <button onClick= {handleClickMatch}>결과 보러가기</button>
+
+        {map()}
 
         <Link href="/information">
           <button>내용을 입력해주세요</button>
