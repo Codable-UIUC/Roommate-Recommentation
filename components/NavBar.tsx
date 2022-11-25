@@ -26,7 +26,7 @@ export default function NavBar({ children }: any) {
       {displayPointer ? pointer : null}
 
       <div className={styles.one}>
-        
+
       </div>
       <div className={styles.two}>
         <h1 className={styles.title}>
@@ -41,10 +41,10 @@ export default function NavBar({ children }: any) {
       </div>
       <div
         className={styles.three}
-        
+
         onMouseOver={(e) => {
           transition(() => {
-            setClientPos([e.clientX, e.clientY]);  
+            setClientPos([e.clientX, e.clientY]);
           })
           setDisplayPointer(true);
         }}
@@ -54,7 +54,7 @@ export default function NavBar({ children }: any) {
 
         onTouchStart ={() => {
           if (audioPlayer) {
-            audioPlayer.play()  
+            audioPlayer.play()
           }
         }}
 
@@ -63,10 +63,10 @@ export default function NavBar({ children }: any) {
             audioPlayer.play()
           }
 
-          
+
         }}
 
-        
+
       ></div>
     </div>
   );
