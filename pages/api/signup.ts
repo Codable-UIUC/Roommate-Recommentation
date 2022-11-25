@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 import nc from 'next-connect'
 import { NextApiRequest, NextApiResponse } from 'next/types';
+import { createJWT } from '../../library/cookie';
 import { EmailExist, insertLogIn } from '../../library/mongodb';
 
 const handler = nc<NextApiRequest, NextApiResponse>({
@@ -20,15 +21,16 @@ const handler = nc<NextApiRequest, NextApiResponse>({
         }
         
         const result = await insertLogIn(email, password);
+        console.log(result)
         const id = result?.insertedId.toString();
 
-        const token = jwt.sign({id}, "This is a Secret Key")
+        const token = createJWT({id})
         const max_age = 60 * 60 * 3;
         const domain = 'localhost'
         const path = '/'
 
         res.setHeader(`Set-Cookie`,`token=${token};Max-Age=${max_age};Domain=${domain};Path=${path}`)
-        res.send(result)
+        res.json({data : "success"})
     })
             
 

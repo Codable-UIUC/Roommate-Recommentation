@@ -5,6 +5,7 @@ import NavBar from "../components/NavBar";
 import RadioGroup from "../components/RadioGroup";
 import { ChangeEvent, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 let FRONT_URL = "http://localhost:3000";
 
@@ -18,19 +19,25 @@ const API = "/api/signup"
 // const FRONT_URL = "https://pet-finder-zeta.vercel.app//api/hello"
 
 export default function SignUp() {
+    const router = useRouter()
 
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('')
     const [error, setError] = useState("");
 
     async function handleClick () {
+        console.log('signin handleClick()')
         const result = await fetch(FRONT_URL + API, {
             method: "post",
             body: JSON.stringify({email, password}),
           })
         
         const result_object = await result.json();
-        console.log(result_object)
+
+        if (result_object.data == 'success') {
+            router.push('/')
+        }
+        
         setError(result_object.data);
     }
 

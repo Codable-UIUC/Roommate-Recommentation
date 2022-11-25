@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 import nc from "next-connect";
 import { NextApiRequest, NextApiResponse } from "next/types";
+import { createJWT } from "../../library/cookie";
 import { insertLogIn, verifyPassword } from "../../library/mongodb";
 import requireAuth from "../../middleware/requireAuth";
 
@@ -17,13 +18,14 @@ const handler = nc<NextApiRequest, NextApiResponse>({
   .post((req, res) => {
     const { email, password } = JSON.parse(req.body);
 
-    console.log('api/signin  mehotd : post')
+    console.log('api/signin  methodd : post')
 
     verifyPassword(email, password).then((result) => {
       if (result == "wrong") return res.json({ data: "wrong password" });
 
+      
       const id = result;
-      const token = jwt.sign({ id }, "This is a Secret Key");
+      const token = createJWT({id});
       const max_age = 60 * 60 * 3; // 3 hrs
       const domain = "localhost";
       const path = "/";

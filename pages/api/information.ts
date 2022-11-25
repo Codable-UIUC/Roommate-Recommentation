@@ -17,6 +17,22 @@ type Data = {
   name: string;
 };
 
+async function getMatchList (id : string |undefined) {
+  console.log(`getMatchList(${id}) - Request to BackEnd server Result Below:`)
+  var axios = require("axios");
+  var config = {
+    method: "post",
+    url: BACK_URL,
+    headers: {
+      "Content-Type": "application/json",
+    },
+    data: JSON.stringify({ id }),
+  };
+  let axiosResult = await axios(config);
+  console.log(axiosResult.data)
+  return axiosResult.data
+}
+
 const handler = nc<any, NextApiResponse>({
   onError: (err, req, res, next) => {
     console.error(err.stack);
@@ -45,36 +61,24 @@ const handler = nc<any, NextApiResponse>({
         religion: parsedBody.religionCategory,
       };
 
-      console.log(objectToInsert)
-  
+      const inserted_id  = await insertUser(objectToInsert, req.idd);
+      const id_string = inserted_id?.toString()
+      await insertDetail(id_string, parsedBody.description);
 
-      const result = await insertUser(objectToInsert);
-      const result_detail = await insertDetail(result?.insertedId,parsedBody.description);
+      const matchList = await getMatchList(id_string)
 
-      var axios = require("axios");
-      var config = {
-        method: "post",
-        url: BACK_URL,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        data: JSON.stringify({ id: result?.insertedId.toString() }),
-      };
-      let axiosResult = await axios(config);
-      //axiosResult = JSON.parse(axiosResult.data);
-
-      const listId : any = axiosResult.data.map((e: any)=> {
+      const listId : any = matchList.map((e: any)=> {
         return e.id;
       })
 
-      const final = await insertMatch(result?.insertedId.toString(), listId)
-
-      console.log('he')
-      console.log(final)
+      await insertMatch(id_string, listId, objectToInsert.name)
+      
+      return res.send("success")
 
     } catch (e) {
-      console.log("error occurred while api/hello")
-      console.log(e);
+      console.log("error occurred while Information ts")
+      //console.log(e);
+      return res.send("fail")
     }
 
 

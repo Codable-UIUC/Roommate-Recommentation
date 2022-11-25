@@ -28,6 +28,7 @@ export default function SignUp() {
     const [error, setError] = useState('')
 
     async function handleClick () {
+        console.log('signin handleClick()')
         const result = await fetch(FRONT_URL + API, {
             method: "post",
             body: JSON.stringify({email, password}),

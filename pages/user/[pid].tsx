@@ -19,17 +19,33 @@ if (typeof window !== "undefined") {
 //const FRONT_URL = "http://localhost:3000/api/hello"
 // const FRONT_URL = "https://pet-finder-zeta.vercel.app//api/hello"
 
-export async function getServerSideProps({req , res} : any) {
-  const url : string = req.url;
-  console.log(url)
+export async function getServerSideProps({req , res, resolvedUrl} : any) {
+  const url : string = resolvedUrl;
+  
   const id = url.split('/')[2]
 
-  const result :any = await findMatchUsers(id);
+  console.log('PID exec & url id : ' + id)
+
+  const result : any = await findMatchUsers(id);
+
+  if (result == 'Error')
+    return {
+      props:{contents:[]}
+    }
+
+  if (result == 'no info') {
+    return {
+      props:{contents: []}
+    }
+  }
 
   const contents = result.map((elem : any) => {
+    if (elem.content == undefined || elem == undefined)
+      elem.content = "empty descripttion"
     return {id : elem._id.toString(), content: elem.content}
   })
   
+  console.log(contents)
   
   return {
     props: {contents}, // will be passed to the page component as props
@@ -40,15 +56,15 @@ export async function getServerSideProps({req , res} : any) {
 export default function ID({contents} : any) {
   const router = useRouter();
   const {pid}: any = router.query
-  const [match, setMatch] = useState([])
-
+  
+  
 
   const map = ()=> {
-    const yo = contents.map((e : any)=> {
+    const yo = contents.map((e : any, index : number)=> {
       return (
-        <div>
-          <h1>{e.id}</h1>
-          <h1>{e.content}</h1>
+        <div key = {e.id} className = 'card'>
+          <h1>{`${index + 1} 등`}</h1>
+           <h1>{e.content}</h1>
         </div>
       )
     })
@@ -70,16 +86,18 @@ export default function ID({contents} : any) {
       </Head>
       <main className={styles.main}>
         <NavBar />
-        <h1>{pid}</h1>
 
+        <div>
+        <h1>안녕하세요! {pid} 님</h1>
+        <h2>당신과 가장 잘 어울리는 룸메이트는</h2>
 
-
-        <button onClick= {handleClickMatch}>결과 보러가기</button>
+        {contents.length == 0 ? <h2>아래 버튼을 클릭하여 정보를 입력해주세요</h2> : null}
+        </div>
 
         {map()}
 
         <Link href="/information">
-          <button>내용을 입력해주세요</button>
+          <button>내 정보</button>
         </Link>
 
         <SignoutButton/>

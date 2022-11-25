@@ -30,7 +30,7 @@ export default function NavBar({ children }: any) {
       </div>
       <div className={styles.two}>
         <h1 className={styles.title}>
-        <a href="https://www.kaggle.com/competitions/petfinder-adoption-prediction">
+        <a href="/">
           <img
             src="/roomie.png"
             alt="roomie"

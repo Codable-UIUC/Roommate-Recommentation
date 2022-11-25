@@ -3,29 +3,50 @@ import styles from "../styles/Home.module.css";
 import ParticlesWrapper from "../components/ParticlesWrapper";
 import NavBar from "../components/NavBar";
 import RadioGroup from "../components/RadioGroup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import Link from "next/link";
-
+import {getIDwithCookie, parseCookie} from "../library/cookie"
+import {findUser, findDetail} from "../library/mongodb"
 
 // export async function getStaticProps() {
 //   return {
 //     props: {}, // will be passed to the page component as props
 //   }
 // }
-
 let FRONT_URL = "http://localhost:3000";
 
 if (typeof window !== "undefined") {
   FRONT_URL = window.location.origin;
 }
-
 const API = "/api/information"
+
+export async function getServerSideProps({req , res} : any) {
+  async function initialize () {
+  console.log('Information Page::initialize - exec')
+    
+    const cookie = req.headers.cookie;
+    const token = parseCookie(cookie).token;
+    const  tmp = await fetch(FRONT_URL + "/api/user_info", {method : 'post', body: JSON.stringify({token})});
+    const tmp2 = await tmp.json();
+    const {data, detail} = tmp2
+    const userInfo = data
+    return {userInfo, detail};
+  }
+  
+  const {userInfo, detail}  = await initialize()
+
+  return {
+    props: {userInfo, detail}, // will be passed to the page component as props
+  }
+}
+
+
 
 //const FRONT_URL = "http://localhost:3000/api/hello"
 // const FRONT_URL = "https://pet-finder-zeta.vercel.app//api/hello"
 
-export default function Information() {
+export default function Information({userInfo, detail} : any) {
 
   const router = useRouter();
 
@@ -40,9 +61,36 @@ export default function Information() {
   const [religionCategory, setRelegionCategory] = useState<boolean>(false);
   const [description, setDescription] = useState<string>("");
 
+  const [disable, setDisable] = useState<boolean>(false)
+
   const [name, setName] = useState<string>("");
 
+  function initialize() {
+    setAgeCategory(userInfo.age)
+    setMbti(userInfo.MBTI)
+    setMajorCategory(userInfo.sex)
+    setLifePattern(userInfo.m_n)
+    setNumberInvitation(userInfo.friend)
+    setFavoriteFoodCategory(userInfo.food)
+    setSchoolYear(userInfo.year)
+    setRelegionCategory(userInfo.religion)
+    setDescription(detail.content)
+    setName (userInfo.name)
+  }
+  useEffect(() => {
+    if (userInfo) {
+      initialize()
+    }
+    
+  }, [])
+
+  function test () {
+    console.log(ageCategory)
+    console.log(description)
+  }
+
   async function handleClick() {
+    console.log("information handleClick()")
 
     const json = JSON.stringify({
       name,
@@ -63,16 +111,18 @@ export default function Information() {
       method: "post",
       body: json,
     })
-      .then(async (res) => {
-        // const result = await res.json();
-        // console.log("결과값: " + result);
+      .then((result) => {
+        console.log("결과값: " + result);
+        //setDisable(true)
         router.push('/')
-        //setData(result);
       })
       .catch((e) => {
-        console.log(e);
+        console.log("error in information.tsx fetch");
       });
   }
+
+  
+
   return (
     
         <div className={styles.container}>
@@ -93,6 +143,8 @@ export default function Information() {
                 setName(e.target.value);
               }}
               placeholder="이름을 입력해주세요"
+              disabled = {disable}
+              defaultValue = {name}
             />
             <br />
 
@@ -101,6 +153,8 @@ export default function Information() {
               stringArray={["18-20", "21-23", "24-26", "27 +"]}
               setIndex={setAgeCategory}
               name={"age"}
+              disabled = {disable}
+              default_idx = {ageCategory}
             />
             <br />
 
@@ -109,6 +163,8 @@ export default function Information() {
               stringArray={["E", "I", "not sure"]}
               setIndex={setMbti}
               name={"MBTI"}
+              disabled = {disable}
+              default_idx = {mbti}
             />
             <br />
             <label className={styles.question}>Major</label>
@@ -116,6 +172,8 @@ export default function Information() {
               stringArray={["LAS", "BUSINESS", "ENGINEERING", "OTHER"]}
               setIndex={setMajorCategory}
               name={"Major"}
+              disabled = {disable}
+              default_idx = {majorCategory}
             />
             <br />
             <label className={styles.question}>Gender</label>
@@ -123,6 +181,8 @@ export default function Information() {
               stringArray={["Male", "Female"]}
               setIndex={setGender}
               name={"Gender"}
+              disabled = {disable}
+              default_idx = {gender}
             />
             <br />
             <label className={styles.question}> Morning / Night Person</label>
@@ -130,6 +190,8 @@ export default function Information() {
               stringArray={["Morning", "Night"]}
               setIndex={setLifePattern}
               name={"morning/night"}
+              disabled = {disable}
+              default_idx = {lifePattern}
             />
             <br />
             <label className={styles.question}>
@@ -142,6 +204,8 @@ export default function Information() {
                 setNumberInvitation(parseInt(e.target.value));
               }}
               placeholder="invite"
+              disabled = {disable}
+              defaultValue = {String(numberInvitation)}
             />
 
             <br />
@@ -150,6 +214,8 @@ export default function Information() {
               stringArray={["한식", "중식", "양식"]}
               setIndex={setFavoriteFoodCategory}
               name={"food"}
+              disabled = {disable}
+              default_idx = {favoriteFoodCategory}
             />
             <br />
 
@@ -164,6 +230,8 @@ export default function Information() {
               ]}
               setIndex={setSchoolYear}
               name={"year"}
+              disabled = {disable}
+              default_idx = {schoolYear}
             />
             <br />
             <label className={styles.question}> 종교 </label>
@@ -171,6 +239,8 @@ export default function Information() {
               stringArray={["기속교", "천주교", "불교", "무교"]}
               setIndex={setRelegionCategory}
               name={"religion"}
+              disabled = {disable}
+              default_idx = {Number(religionCategory)}
             />
 
             <label className={styles.question}>간단한 자기소개</label>
@@ -181,16 +251,20 @@ export default function Information() {
               rows={4}
               cols={50}
               placeholder="음식 취향, 알러지, 좋아하는 노래 등"
+              disabled = {disable}
+              defaultValue = {description}
             />
 
             <br />
-            <button onClick={handleClick}> Send </button>
+            <button onClick={handleClick} disabled = {disable}> Save </button>
+            {/* <button onClick={test} disabled = {disable}> Test </button> */}
+
 
             <br />
 
-            <Link href="/">
+            {/* <Link href="/">
               <h1>홈으로</h1>
-            </Link>
+            </Link> */}
     
           </main>
 

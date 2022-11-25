@@ -6,6 +6,7 @@ import RadioGroup from "../components/RadioGroup";
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { fetchData, parseCookie } from "../library/cookie";
 
 
 let FRONT_URL = "http://localhost:3000";
@@ -18,14 +19,7 @@ if (typeof window !== "undefined") {
 // const FRONT_URL = "https://pet-finder-zeta.vercel.app//api/hello"
 
 
-const parseCookie = (str : string ) =>
-  str
-  .split(';')
-  .map(v => v.split('='))
-  .reduce((acc : any, v) => {
-    acc[decodeURIComponent(v[0].trim())] = decodeURIComponent(v[1].trim());
-    return acc;
-  }, {});
+
   
 
 export default function Home() {
@@ -34,24 +28,15 @@ export default function Home() {
 
   const tokenRef = useRef<any>()
 
-  async function fetchData (token : string) {
-    if (token) {
-      const result = await fetch(FRONT_URL + '/api/signin')
-      const result_id = await result.json()
-      return result_id.data
-    }
-  }
 
   useEffect(()=> {
     const token = parseCookie(document.cookie).token
     if (token) {
       fetchData(token).then(res => {
-        setId(res)
+        //setId(res)
         router.push(`/user/${res}`)
       })
-      
     }
-      
   },[])
 
   return (
