@@ -25,9 +25,6 @@ export async function getServerSideProps({ req, res }: any) {
     console.log(token)
 
     const fetchResponse: Response = await fetch(FRONT_URL + "/api/user_info", {
-      headers: {
-        'Content-Type': 'application/json'
-      },
       method: "POST",
       body: token,
     });

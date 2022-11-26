@@ -17,6 +17,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
   })
     .post(async (req, res) => {
         console.log('api/user_info::POST request')
+        console.log(req)
         console.log("req.body 검사")
         console.log(req.body) // req body 가 자동으로 바뀌네 ㅎ....
         const token = (req.body)
