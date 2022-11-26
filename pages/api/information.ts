@@ -2,23 +2,18 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ConnectionPoolReadyEvent, MongoClient, ObjectId } from "mongodb";
 import nc from "next-connect";
-import someMiddleware from "../../middleware/handler";
 import { insertDetail, insertMatch, insertUser } from "../../library/mongodb";
 import requireAuth from "../../middleware/requireAuth";
+import logger from "../../library/logger"
+import { info } from "console";
+import { getModeForResolutionAtIndex } from "typescript";
 
-const BACK_URL = "http://127.0.0.1:5000/roomie";
+const BACK_URL = process.env.NEXT_PUBLIC_BACK_URL;
 //const BACK_URL = "http://illinoiskorean.web.illinois.edu/predict";
-const DB = "test"
-const DETAIL = "Details"
-const USER = "Users"
-const url = "mongodb://localhost:27017/";
 
-type Data = {
-  name: string;
-};
 
 async function getMatchList (id : string |undefined) {
-  console.log(`getMatchList(${id}) - Request to BackEnd server Result Below:`)
+  logger.info({id}, 'getMatchList::exec - Request to BackEnd server Result Below')
   var axios = require("axios");
   var config = {
     method: "post",
@@ -29,8 +24,9 @@ async function getMatchList (id : string |undefined) {
     data: JSON.stringify({ id }),
   };
   let axiosResult = await axios(config);
-  console.log(axiosResult.data)
-  return axiosResult.data
+  const final = axiosResult.data
+  logger.info({final}, 'getMatchList:: Retrieved Data')
+  return final
 }
 
 const handler = nc<any, NextApiResponse>({
@@ -45,8 +41,8 @@ const handler = nc<any, NextApiResponse>({
   .use(requireAuth)
   .post(async (req, res) => {
     try {
-      
       const parsedBody = JSON.parse(req.body);
+      logger.info({reqbody: parsedBody}, 'api/information:: POST request')
       const objectToInsert = {
         _id : new ObjectId(req.idd),
         name: parsedBody.name,
@@ -67,16 +63,17 @@ const handler = nc<any, NextApiResponse>({
 
       const matchList = await getMatchList(id_string)
 
-      const listId : any = matchList.map((e: any)=> {
-        return e.id;
-      })
+      console.log(matchList)
 
-      await insertMatch(id_string, listId, objectToInsert.name)
+      const listId : any = matchList.id
+      const listName : any = matchList.names
+
+      await insertMatch(id_string, listId, listName)
       
       return res.send("success")
 
     } catch (e) {
-      console.log("error occurred while Information ts")
+      logger.error (e, 'api/information:: ERROR occured')
       //console.log(e);
       return res.send("fail")
     }
