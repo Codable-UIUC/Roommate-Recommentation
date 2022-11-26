@@ -2,12 +2,5 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/api/user_info": "pages/api/user_info.js",
-  "/user/[pid]": "pages/user/[pid].js",
-  "/": "pages/index.js",
-  "/api/signin": "pages/api/signin.js",
-  "/information": "pages/information.js",
-  "/api/information": "pages/api/information.js",
-  "/api/signup": "pages/api/signup.js",
-  "/signup": "pages/signup.js"
+  "/user/[pid]": "pages/user/[pid].js"
 }
