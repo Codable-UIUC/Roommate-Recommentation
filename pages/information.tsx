@@ -24,10 +24,21 @@ export async function getServerSideProps({ req, res }: any) {
     console.log("토큰 검사")
     console.log(token)
 
-    const fetchResponse: Response = await fetch(FRONT_URL + "/api/user_info", {
-      method: "POST",
-      body: JSON.stringify({token}),
+    
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    var raw = JSON.stringify({
+      "token": `${token}`
     });
+    
+    var requestOptions = {
+      method: 'POST',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+    
+    const fetchResponse: Response = fetch("https://roomie-one.vercel.app/api/user_info", requestOptions)
 
     console.log('2')
     if (fetchResponse.status == 500) {
