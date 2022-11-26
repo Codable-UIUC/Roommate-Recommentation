@@ -1,0 +1,9 @@
+{
+    "vaccinated":3,
+    "sterilized": 1,
+    "dewormed" : 0,
+    "gender" : 1,
+    "age" : 20,
+    "type" : 1,
+    "health" : 1
+}
