@@ -51,7 +51,7 @@ export async function getServerSideProps({ req, res }: any) {
 
     console.log('3')
     
-    if (tmp.data == "no matching") {
+    if (fetchResponse.data == "no matching") {
       return { userInfo: "no", detail: "no" };
     }
 
