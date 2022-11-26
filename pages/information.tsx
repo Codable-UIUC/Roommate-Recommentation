@@ -24,19 +24,30 @@ export async function getServerSideProps({ req, res }: any) {
     console.log("토큰 검사")
     console.log(token)
 
-    const fetchResponse = await fetch(FRONT_URL + "/api/user_info", {
-      method: "POST",
-      body: JSON.stringify({"token" : `${token}`}),
-      headers : {"Content-Type" : "application/json"}
+    
+
+    var axios = require('axios');
+    var data = JSON.stringify({
+      "token": token
     });
+    
+    var config = {
+      method: 'post',
+      url: 'https://roomie-one.vercel.app/api/user_info',
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+      data : data
+    };
+
+    const fetchResponse = await axios(config)
 
     console.log('2')
+    console.log(fetchResponse)
     if (fetchResponse.status == 500) {
       console.log("Information SSG Page::initialize - internal error")
       return { userInfo: "no", detail: "no" };
     }
-
-    const tmp = await fetchResponse.json();
 
     console.log('3')
     
@@ -44,7 +55,7 @@ export async function getServerSideProps({ req, res }: any) {
       return { userInfo: "no", detail: "no" };
     }
 
-    const { data, detail } = tmp;
+    const { data, detail } = fetchResponse;
     const userInfo = data;
 
     console.log(data, detail);
