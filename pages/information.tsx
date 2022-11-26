@@ -38,7 +38,7 @@ export async function getServerSideProps({ req, res }: any) {
       redirect: 'follow'
     };
     
-    const fetchResponse = fetch("https://roomie-one.vercel.app/api/user_info", requestOptions)
+    const fetchResponse :any = fetch("https://roomie-one.vercel.app/api/user_info", requestOptions)
 
     console.log('2')
     if (fetchResponse.status == 500) {
