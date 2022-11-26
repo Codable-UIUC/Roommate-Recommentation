@@ -64,6 +64,7 @@ export default function ID({contents} : any) {
       return (
         <div key = {e.id} className = 'card'>
           <h1>{`${index + 1} 등`}</h1>
+
            <h1>{e.content}</h1>
         </div>
       )

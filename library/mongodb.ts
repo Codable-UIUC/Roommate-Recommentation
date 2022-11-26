@@ -1,6 +1,8 @@
 import { MongoClient, ObjectId } from "mongodb";
+import logger from '../library/logger'
 
 const crypto = require('crypto');
+
 
 
 var sha512 = function(password:string, salt:string){
@@ -33,7 +35,7 @@ const LOGIN = "Login";
 const URL = String(process.env.DB_HOST);
 
 export const insertUser = async (user: any, id:string) => {
-  console.log(`insertUser - (user - ${user}, id - ${id})`)
+  logger.info({user, id}, 'insertUser::exec')
   let result;
   const client = new MongoClient(URL);
   const userCollection = client.db(DB).collection(USER);
@@ -62,7 +64,7 @@ export const insertUser = async (user: any, id:string) => {
 };
 
 export const userExist = async (id : string) : Promise<boolean> => {
-  console.log(`userExist id - ${id}`)
+  logger.info({id}, "userExist::exec")
   const client = new MongoClient(URL);
   const userCollection = client.db(DB).collection(USER);
   const result = await userCollection.find({_id : new ObjectId(id)})
@@ -77,6 +79,7 @@ export const userExist = async (id : string) : Promise<boolean> => {
 }
 
 export const insertDetail = async (id : string|undefined, detail : string) => {
+  logger.info({id, detail}, "insertDetail::exec")
   let result;
   const client = new MongoClient(URL);
   const detailCollection = client.db(DB).collection(DETAIL);
@@ -98,6 +101,7 @@ export const insertDetail = async (id : string|undefined, detail : string) => {
 }
 
 export const insertLogIn = async (email : string, pw : string) => {
+  logger.info({email, pw},'insertLogIn::exec (email, pw)')
   let result;
   const client = new MongoClient(URL);
   const loginCollection = client.db(DB).collection(LOGIN);
@@ -117,23 +121,22 @@ export const insertLogIn = async (email : string, pw : string) => {
 }
 
 export const matchExist = async (id: string) => {
-  console.log(`userExist id - ${id}`)
+  logger.info({id},'matchExist::exec (id)')
   const client = new MongoClient(URL);
   const matchCollection = client.db(DB).collection(MATCH);
   const result = await matchCollection.find({_id : new ObjectId(id)})
   if (!result) {
-    console.log("userExist:: false")
+    logger.info('matchExist::no match')
     await client.close();
     return false;
   }
-  console.log("userExist:: true")
+  console.log("matchExist:: true")
   await client.close();
   return true
 }
 
 export const insertMatch = async (id: string |undefined, array: string[], name : string) => {
-  console.log(`insertMatch:: Exec id - ${id}, array - ${array}, name - ${name}
-  result : `)
+  logger.info({id, array, name},`insertMatch:: Exec (id, array, name)`)
   let result;
   const client = new MongoClient(URL);
   const matchCollection = client.db(DB).collection(MATCH);
@@ -165,8 +168,9 @@ export const insertMatch = async (id: string |undefined, array: string[], name :
   }
 };
 
+
 export const findMatchUsers = async (id: string) => {
-  console.log(`findMatchUsers Exec (id - ${id})`)
+  logger.info({id},`findMatchUsers::Exec (id)`)
   const client = new MongoClient(URL);
   const matchCollection = client.db(DB).collection(MATCH);
   const detailCollection = client.db(DB).collection(DETAIL);
@@ -175,7 +179,7 @@ export const findMatchUsers = async (id: string) => {
     const result = await matchCollection.findOne({ _id: new ObjectId(id) });
 
     if (!result) {
-      console.log ('findMatchUsers:: No matching id in Match Collection')
+      logger.info ({result},'findMatchUsers:: No matching id in Match Collection')
       await client.close();
       return "no info"
     }
@@ -184,13 +188,13 @@ export const findMatchUsers = async (id: string) => {
       return new ObjectId(id)
     })
 
-    console.log('query string = ' + query_strings)
+    logger.info({query_strings}, 'findMatchUsers:: result')
 
      await detailCollection.find({_id: {$in :query_strings}}).forEach((doc) => {
       users.push(doc)
     });
   } catch (e) {
-    console.log("findMatchUsers:: Catch Error")
+    logger.error("findMatchUsers:: Catch Error")
     await client.close();
     return "Error";
   } finally {
@@ -212,28 +216,33 @@ export const EmailExist = async (email: string) => {
 };
 
 export const verifyPassword = async (email:string, password:string) => {
+  console.log(`verifyPassword:: exec - email : ${email}, pw : ${password}`);
   const client = new MongoClient(URL);
   const loginCollection = client.db(DB).collection(LOGIN);
   const result = await loginCollection.findOne({ email: email });
+  client.close();
 
-  const input = sha512(password,result?.salt).passwordHash
-  const actual = result?.passwordHash
+  if (!result) {
+    return "no matching id";
+  }
+
+  const input = sha512(password,result?.salt).passwordHash;
+  const actual = result?.passwordHash;
 
   if (input == actual) {
-
-    return result?._id.toString()
+    return result?._id.toString();
   }
-  return "wrong"
+  return "wrong";
 }
 
 export const findUser = async (id : string) => {
   console.log("findUser::Exec - id" + id)
-  let result
+  let result;
   const client = new MongoClient(URL);
   const userCollection = client.db(DB).collection(USER);
   result = await userCollection.findOne({_id : new ObjectId(id)})
   client.close();
-  return result
+  return result;
 }
 
 export const findDetail = async (id : string) => {

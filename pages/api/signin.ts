@@ -4,6 +4,7 @@ import { NextApiRequest, NextApiResponse } from "next/types";
 import { createJWT } from "../../library/cookie";
 import { insertLogIn, verifyPassword } from "../../library/mongodb";
 import requireAuth from "../../middleware/requireAuth";
+import logger from "../../library/logger";
 
 const handler = nc<NextApiRequest, NextApiResponse>({
   onError: (err, req, res, next) => {
@@ -17,11 +18,11 @@ const handler = nc<NextApiRequest, NextApiResponse>({
   .use(requireAuth)
   .post((req, res) => {
     const { email, password } = JSON.parse(req.body);
-
-    console.log('api/signin  methodd : post')
+    logger.info('api/signin  methodd : post')
 
     verifyPassword(email, password).then((result) => {
       if (result == "wrong") return res.json({ data: "wrong password" });
+      if (result == "no matching id") return res.json({data : "no matching email"})
 
       
       const id = result;
@@ -39,7 +40,8 @@ const handler = nc<NextApiRequest, NextApiResponse>({
     });
   })
   .get((req, res) => {
-    res.send("hi");
+    console.log('api/signin  method : get')
+    res.json({data : "hi"});
   });
 
 export default handler;
