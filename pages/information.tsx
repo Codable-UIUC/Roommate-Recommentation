@@ -18,7 +18,11 @@ export async function getServerSideProps({ req, res }: any) {
     console.log("Information Page::initialize - exec");
 
     const cookie = req.headers.cookie;
+    console.log("cookie 검사")
+    console.log(cookie)
     const token = parseCookie(cookie).token;
+    console.log("토큰 검사")
+    console.log("cookie")
 
     console.log('1')
     const fetchResponse: Response = await fetch(FRONT_URL + "/api/user_info", {
