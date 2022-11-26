@@ -22,15 +22,14 @@ export async function getServerSideProps({ req, res }: any) {
     console.log(cookie)
     const token = parseCookie(cookie).token;
     console.log("토큰 검사")
-    console.log("cookie")
+    console.log(token)
 
-    console.log('1')
     const fetchResponse: Response = await fetch(FRONT_URL + "/api/user_info", {
       headers: {
         'Content-Type': 'application/json'
       },
       method: "POST",
-      body: JSON.stringify({token}),
+      body: token,
     });
 
     console.log('2')
