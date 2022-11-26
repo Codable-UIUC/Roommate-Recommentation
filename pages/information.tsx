@@ -11,7 +11,6 @@ import { findUser, findDetail } from "../library/mongodb";
 
 
 let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
-
 const API = "/api/information";
 
 export async function getServerSideProps({ req, res }: any) {
@@ -20,6 +19,8 @@ export async function getServerSideProps({ req, res }: any) {
 
     const cookie = req.headers.cookie;
     const token = parseCookie(cookie).token;
+
+    console.log('1')
     const fetchResponse: Response = await fetch(FRONT_URL + "/api/user_info", {
       headers: {
         'Content-Type': 'application/json'
@@ -28,13 +29,15 @@ export async function getServerSideProps({ req, res }: any) {
       body: JSON.stringify({token}),
     });
 
-
+    console.log('2')
     if (fetchResponse.status == 500) {
       console.log("Information SSG Page::initialize - internal error")
       return { userInfo: "no", detail: "no" };
     }
 
     const tmp = await fetchResponse.json();
+
+    console.log('3')
     
     if (tmp.data == "no matching") {
       return { userInfo: "no", detail: "no" };
