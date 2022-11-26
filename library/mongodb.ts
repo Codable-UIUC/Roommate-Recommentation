@@ -3,8 +3,6 @@ import logger from '../library/logger'
 
 const crypto = require('crypto');
 
-
-
 var sha512 = function(password:string, salt:string){
   var hash = crypto.createHmac('sha512', salt); /** Hashing algorithm sha512 */
   hash.update(password);

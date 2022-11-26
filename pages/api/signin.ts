@@ -28,7 +28,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
       const id = result;
       const token = createJWT({id});
       const max_age = 60 * 60 * 3; // 3 hrs
-      const domain = "localhost";
+      const domain = process.env.NEXT_PUBLIC_FRONT_URL;
       const path = "/";
 
       res.setHeader(
