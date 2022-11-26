@@ -20,7 +20,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
         console.log(req)
         console.log("req.body 검사")
         console.log(req.body) // req body 가 자동으로 바뀌네 ㅎ....
-        const token = (req.body)
+        const {token} = (req.body)
         console.log("token 검사")
         console.log(token) 
         const id = decodeJWT(token)
