@@ -33,7 +33,7 @@ export async function getServerSideProps({ req, res }: any) {
     
     var config = {
       method: 'post',
-      url: 'https://roomie-one.vercel.app/api/user_info',
+      url: FRONT_URL+'/user_info',
       headers: { 
         'Content-Type': 'application/json'
       },
@@ -42,23 +42,18 @@ export async function getServerSideProps({ req, res }: any) {
 
     const fetchResponse = await axios(config)
 
-    console.log('2')
-    console.log(fetchResponse)
     if (fetchResponse.status == 500) {
       console.log("Information SSG Page::initialize - internal error")
       return { userInfo: "no", detail: "no" };
     }
 
-    console.log('3')
-    
     if (fetchResponse.data == "no matching") {
       return { userInfo: "no", detail: "no" };
     }
 
-    const { data, detail } = fetchResponse;
+    const { data, detail } = fetchResponse.data;
     const userInfo = data;
 
-    console.log(data, detail);
     return { userInfo, detail };
   }
 
