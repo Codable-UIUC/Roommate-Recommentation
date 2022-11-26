@@ -27,7 +27,7 @@ export async function getServerSideProps({ req, res }: any) {
     
 
     var axios = require('axios');
-    var data = JSON.stringify({
+    var data_t = JSON.stringify({
       "token": token
     });
     
@@ -37,7 +37,7 @@ export async function getServerSideProps({ req, res }: any) {
       headers: { 
         'Content-Type': 'application/json'
       },
-      data : data
+      data : data_t
     };
 
     const fetchResponse = await axios(config)
