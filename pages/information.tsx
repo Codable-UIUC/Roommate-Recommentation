@@ -33,7 +33,7 @@ export async function getServerSideProps({ req, res }: any) {
     
     var config = {
       method: 'post',
-      url: FRONT_URL+'/user_info',
+      url: FRONT_URL + 'api/user_info',
       headers: { 
         'Content-Type': 'application/json'
       },
@@ -47,12 +47,12 @@ export async function getServerSideProps({ req, res }: any) {
       return { userInfo: "no", detail: "no" };
     }
 
-    if (fetchResponse.data == "no matching") {
+    if (fetchResponse.data.data == "no matching") {
       return { userInfo: "no", detail: "no" };
     }
 
     const { data, detail } = fetchResponse.data;
-    const userInfo = data;
+    // const userInfo = data;
 
     return { userInfo, detail };
   }
