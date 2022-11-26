@@ -15,16 +15,16 @@ export default function Home() {
   const router = useRouter()
   const [id, setId] = useState("")
 
-  const tokenRef = useRef<any>()
-
 
   useEffect(()=> {
-    const token = parseCookie(document.cookie).token
-    if (token) {
-      fetchData(token).then(res => {
-        //setId(res)
-        router.push(`/user/${res}`)
-      })
+    if (document.cookie) {
+      const token = parseCookie(document.cookie).token
+      if (token) {
+        fetchData(token).then(res => {
+          //setId(res)
+          router.push(`/user/${res}`)
+        })
+      }
     }
   },[])
 
