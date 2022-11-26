@@ -6,20 +6,9 @@ import { useState, useRef } from "react";
 import NavBar from "../components/NavBar";
 import RadioGroup from "../components/RadioGroup";
 
-// export async function getStaticProps() {
-//   return {
-//     props: {}, // will be passed to the page component as props
-//   }
-// }
 
 let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
 
-if (typeof window !== "undefined") {
-  FRONT_URL = window.location.origin;
-}
-
-//const FRONT_URL = "http://localhost:3000/api/hello"
-// const FRONT_URL = "https://pet-finder-zeta.vercel.app//api/hello"
 
 export default function Test() {
   async function handleClick() {

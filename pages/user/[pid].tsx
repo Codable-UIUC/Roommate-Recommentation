@@ -12,13 +12,6 @@ import {findMatchUsers} from "../../library/mongodb"
 
 const FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
 
-// if (typeof window !== "undefined") {
-//   FRONT_URL = window.location.origin;
-// }
-
-//const FRONT_URL = "http://localhost:3000/api/hello"
-// const FRONT_URL = "https://pet-finder-zeta.vercel.app//api/hello"
-
 export async function getServerSideProps({req , res, resolvedUrl} : any) {
   const url : string = resolvedUrl;
   

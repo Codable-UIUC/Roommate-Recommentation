@@ -1,4 +1,4 @@
-let FRONT_URL = "http://localhost:3000";
+let FRONT_URL = "process.env.NEXT_PUBLIC_FRONT_URL";
 
 const SECRET_KEY = process.env.JWT_SECRET
 

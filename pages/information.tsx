@@ -10,16 +10,8 @@ import { getIDwithCookie, parseCookie } from "../library/cookie";
 import { findUser, findDetail } from "../library/mongodb";
 
 
-// export async function getStaticProps() {
-//   return {
-//     props: {}, // will be passed to the page component as props
-//   }
-// }
 let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
 
-// if (typeof window !== "undefined") {
-//   FRONT_URL = window.location.origin;
-// }
 const API = "/api/information";
 
 export async function getServerSideProps({ req, res }: any) {
@@ -66,9 +58,6 @@ export async function getServerSideProps({ req, res }: any) {
     props: { userInfo, detail }, // will be passed to the page component as props
   };
 }
-
-//const FRONT_URL = "http://localhost:3000/api/hello"
-// const FRONT_URL = "https://pet-finder-zeta.vercel.app//api/hello"
 
 export default function Information({ userInfo, detail }: any) {
   const router = useRouter();

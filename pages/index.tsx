@@ -11,17 +11,6 @@ import { fetchData, parseCookie } from "../library/cookie";
 
 let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
 
-if (typeof window !== "undefined") {
-  FRONT_URL = window.location.origin;
-}
-
-//const FRONT_URL = "http://localhost:3000/api/hello"
-// const FRONT_URL = "https://pet-finder-zeta.vercel.app//api/hello"
-
-
-
-  
-
 export default function Home() {
   const router = useRouter()
   const [id, setId] = useState("")
