@@ -81,31 +81,7 @@ const handler = nc<any, NextApiResponse>({
 
     })
   .get(async (_req, res) => {
-    // let testCollection = client.db("test").collection("Users");
-    // var obj = { value: "hello2" };
-    // const result = await testCollection.insertOne(obj);
-    // const id = result.insertedId.toString();
 
-    // var axios = require("axios");
-
-    // var config = {
-    //   method: "post",
-    //   url: BACK_URL,
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   data: req.body,
-    // };
-
-    // axios(config)
-    //   .then(function (response: any) {
-    //     console.log(response.data);
-    //     res.status(200).json(response.data);
-    //   })
-    //   .catch(function (err: any) {
-    //     console.log(err);
-    //     res.status(400).send(err);
-    //   });
     return res.send("hello")
   });
 
