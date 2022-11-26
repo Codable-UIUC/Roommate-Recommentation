@@ -11,7 +11,7 @@ import { findUser, findDetail } from "../library/mongodb";
 
 
 let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
-const API = "/api/information";
+const API = "api/information";
 
 export async function getServerSideProps({ req, res }: any) {
   async function initialize() {

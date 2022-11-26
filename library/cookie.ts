@@ -4,7 +4,7 @@ const SECRET_KEY = process.env.JWT_SECRET
 
 export async function fetchData (token : string) {
     if (token) {
-      const result = await fetch(FRONT_URL + '/api/signin')
+      const result = await fetch(FRONT_URL + 'api/signin')
       const result_id = await result.json()
       return result_id.data
     }

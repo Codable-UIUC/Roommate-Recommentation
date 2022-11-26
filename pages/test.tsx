@@ -13,7 +13,7 @@ let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
 export default function Test() {
   async function handleClick() {
     // setResult({loading:true,})
-    await fetch(FRONT_URL + "/api/test", {
+    await fetch(FRONT_URL + "api/test", {
       method: "get",
     })
       .then(async (res) => {
