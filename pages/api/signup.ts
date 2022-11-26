@@ -26,15 +26,16 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 
         try {
           const token = createJWT({id});
+          const max_age = 60 * 60 * 3;
+          const domain = process.env.NEXT_PUBLIC_FRONT_DOMAIN;
+          
+          const path = '/'
+  
+          res.setHeader(`Set-Cookie`,`token=${token};Max-Age=${max_age};Domain=${domain};Path=${path}`)
         } catch (e) {
           return res.status(404).end("Error while creating JWT");
         }
-        const max_age = 60 * 60 * 3;
-        const domain = process.env.NEXT_PUBLIC_FRONT_DOMAIN;
-        
-        const path = '/'
 
-        res.setHeader(`Set-Cookie`,`token=${token};Max-Age=${max_age};Domain=${domain};Path=${path}`)
         res.json({data : "success"})
     })
             
