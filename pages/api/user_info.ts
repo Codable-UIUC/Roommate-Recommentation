@@ -28,4 +28,5 @@ const handler = nc<NextApiRequest, NextApiResponse>({
         return res.json({data,detail})
     });
 
+    //
     export default handler

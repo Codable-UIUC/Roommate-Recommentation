@@ -25,12 +25,12 @@ function hashPassword(password: string) {
   };
 }
 
-const DB = "test";
+const DB = process.env.DB_NAME;
 const DETAIL = "Details";
 const MATCH = "Match";
 const USER = "Users";
 const LOGIN = "Login";
-const URL = "mongodb://localhost:27017/";
+const URL = String(process.env.DB_HOST);
 
 export const insertUser = async (user: any, id:string) => {
   console.log(`insertUser - (user - ${user}, id - ${id})`)

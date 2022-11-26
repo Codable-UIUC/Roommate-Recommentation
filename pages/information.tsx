@@ -14,7 +14,7 @@ import {findUser, findDetail} from "../library/mongodb"
 //     props: {}, // will be passed to the page component as props
 //   }
 // }
-let FRONT_URL = "http://localhost:3000";
+let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
 
 if (typeof window !== "undefined") {
   FRONT_URL = window.location.origin;
@@ -31,6 +31,8 @@ export async function getServerSideProps({req , res} : any) {
     const tmp2 = await tmp.json();
     const {data, detail} = tmp2
     const userInfo = data
+
+    console.log(data, detail)
     return {userInfo, detail};
   }
   

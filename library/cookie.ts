@@ -1,6 +1,6 @@
 let FRONT_URL = "http://localhost:3000";
 
-const SECRET_KEY = "This is a Secret Key"
+const SECRET_KEY = process.env.JWT_SECRET
 
 export async function fetchData (token : string) {
     if (token) {

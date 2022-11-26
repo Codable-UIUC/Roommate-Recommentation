@@ -9,7 +9,7 @@ import { useRouter } from "next/router";
 
 
 
-let FRONT_URL = "http://localhost:3000";
+let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
 
 if (typeof window !== "undefined") {
   FRONT_URL = window.location.origin;

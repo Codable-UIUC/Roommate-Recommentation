@@ -2,20 +2,12 @@
 import type { NextApiRequest, NextApiResponse } from "next";
 import { ConnectionPoolReadyEvent, MongoClient, ObjectId } from "mongodb";
 import nc from "next-connect";
-import someMiddleware from "../../middleware/handler";
 import { insertDetail, insertMatch, insertUser } from "../../library/mongodb";
 import requireAuth from "../../middleware/requireAuth";
 
-const BACK_URL = "http://127.0.0.1:5000/roomie";
+const BACK_URL = process.env.NEXT_PUBLIC_BACK_URL;
 //const BACK_URL = "http://illinoiskorean.web.illinois.edu/predict";
-const DB = "test"
-const DETAIL = "Details"
-const USER = "Users"
-const url = "mongodb://localhost:27017/";
 
-type Data = {
-  name: string;
-};
 
 async function getMatchList (id : string |undefined) {
   console.log(`getMatchList(${id}) - Request to BackEnd server Result Below:`)
