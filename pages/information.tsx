@@ -18,11 +18,7 @@ export async function getServerSideProps({ req, res }: any) {
     console.log("Information Page::initialize - exec");
 
     const cookie = req.headers.cookie;
-    console.log("cookie 검사")
-    console.log(cookie)
     const token = parseCookie(cookie).token;
-    console.log("토큰 검사")
-    console.log(token)
 
     
 
@@ -217,7 +213,6 @@ export default function Information({ userInfo, detail }: any) {
           친구 데려오는 여부 일주일에 몇회..?
         </label>
         <input
-          type="number"
           onChange={(e) => {
             setNumberInvitation(parseInt(e.target.value));
           }}
