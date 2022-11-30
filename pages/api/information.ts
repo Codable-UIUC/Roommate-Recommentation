@@ -13,7 +13,7 @@ const BACK_URL = process.env.NEXT_PUBLIC_BACK_URL;
 
 
 async function getMatchList (id : string |undefined) {
-  logger.info({id}, 'getMatchList::exec - Request to BackEnd server Result Below')
+  logger.info({id, back_url : BACK_URL}, 'getMatchList::exec - Request to BackEnd server Result Below')
   var axios = require("axios");
   var config = {
     method: "post",

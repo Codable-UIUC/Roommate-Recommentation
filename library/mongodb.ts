@@ -145,12 +145,14 @@ export const insertMatch = async (id: string |undefined, array: string[], name :
       throw "id is undefined"
     const idExist = await matchExist(id);
     if (!idExist) {
+      console.log('insertMatch:: new match inserted')
       result = await matchCollection.insertOne({
         _id: new ObjectId(id),
         match: array,
         name : name
       });
     } else {
+      console.log('insertMatch:: replace the original match')
       result = await matchCollection.replaceOne({_id : new ObjectId(id)},{
         _id: new ObjectId(id),
         match: array,
@@ -177,6 +179,7 @@ export const findMatchUsers = async (id: string) => {
   let users : any[] = [];
   try {
     const result = await matchCollection.findOne({ _id: new ObjectId(id) });
+    logger.info({result, id},`findMatchUsers:: findOne with id in match collection`)
 
     if (!result) {
       logger.info ({result},'findMatchUsers:: No matching id in Match Collection')
