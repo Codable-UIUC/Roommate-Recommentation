@@ -20,8 +20,6 @@ export async function getServerSideProps({ req, res }: any) {
     const cookie = req.headers.cookie;
     const token = parseCookie(cookie).token;
 
-    
-
     var axios = require('axios');
     var data_t = JSON.stringify({
       "token": token
@@ -36,7 +34,10 @@ export async function getServerSideProps({ req, res }: any) {
       data : data_t
     };
 
+    console.log(1)
     const fetchResponse = await axios(config)
+
+    console.log(2)
 
     if (fetchResponse.status == 500) {
       console.log("Information SSG Page::initialize - internal error")
