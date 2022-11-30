@@ -13,8 +13,9 @@ const handler = nc<NextApiRequest, NextApiResponse>({
     },
   })
     .get(async (req, res) => {
-    
-        res.setHeader(`Set-Cookie`,`token=deleted;expires=Thu, 01 Jan 1970 00:00:00 GMT;Path=/`)
+        const domain = process.env.NEXT_PUBLIC_FRONT_DOMAIN;
+        //res.setHeader(`Set-Cookie`,`token=deleted;expires=Thu, 01 Jan 1970 00:00:00 GMT;Domain=${domain};Path=/`)
+        res.setHeader(`Set-Cookie`,`token=;Max-Age=0;Domain=${domain};Path=/`)
     
         res.json({data : "success"})
     })
