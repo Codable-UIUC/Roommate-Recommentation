@@ -1,10 +1,19 @@
+<<<<<<< HEAD
 
 const FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
+=======
+const FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
+
+>>>>>>> tmp
 const SECRET_KEY = process.env.JWT_SECRET
 
 export async function fetchData (token : string) {
     if (token) {
+<<<<<<< HEAD
       const result = await fetch(FRONT_URL + '/api/signin')
+=======
+      const result = await fetch(FRONT_URL + 'api/signin')
+>>>>>>> tmp
       const result_id = await result.json()
       return result_id.data
     }

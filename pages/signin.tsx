@@ -10,8 +10,7 @@ import { useRouter } from "next/router";
 
 
 let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
-
-const API = "/api/signin"
+const API = "api/signin"
 
 
 export default function SignUp() {

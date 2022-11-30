@@ -10,17 +10,8 @@ import { getIDwithCookie, parseCookie } from "../library/cookie";
 import { findUser, findDetail } from "../library/mongodb";
 
 
-// export async function getStaticProps() {
-//   return {
-//     props: {}, // will be passed to the page component as props
-//   }
-// }
 let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
-
-// if (typeof window !== "undefined") {
-//   FRONT_URL = window.location.origin;
-// }
-const API = "/api/information";
+const API = "api/information";
 
 export async function getServerSideProps({ req, res }: any) {
   async function initialize() {
@@ -28,30 +19,37 @@ export async function getServerSideProps({ req, res }: any) {
 
     const cookie = req.headers.cookie;
     const token = parseCookie(cookie).token;
-    const fetchResponse: Response = await fetch(FRONT_URL + "/api/user_info", {
-      headers: {
+
+    
+
+    var axios = require('axios');
+    var data_t = JSON.stringify({
+      "token": token
+    });
+    
+    var config = {
+      method: 'post',
+      url: FRONT_URL + 'api/user_info',
+      headers: { 
         'Content-Type': 'application/json'
       },
-      method: "POST",
-      body: JSON.stringify({token}),
-    });
+      data : data_t
+    };
 
+    const fetchResponse = await axios(config)
 
     if (fetchResponse.status == 500) {
       console.log("Information SSG Page::initialize - internal error")
       return { userInfo: "no", detail: "no" };
     }
 
-    const tmp = await fetchResponse.json();
-    
-    if (tmp.data == "no matching") {
+    if (fetchResponse.data.data == "no matching") {
       return { userInfo: "no", detail: "no" };
     }
 
-    const { data, detail } = tmp;
+    const { data, detail } = fetchResponse.data;
     const userInfo = data;
 
-    console.log(data, detail);
     return { userInfo, detail };
   }
 
@@ -215,7 +213,6 @@ export default function Information({ userInfo, detail }: any) {
           친구 데려오는 여부 일주일에 몇회..?
         </label>
         <input
-          type="number"
           onChange={(e) => {
             setNumberInvitation(parseInt(e.target.value));
           }}

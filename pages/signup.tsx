@@ -9,12 +9,7 @@ import { useRouter } from "next/router";
 
 let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
 
-if (typeof window !== "undefined") {
-  FRONT_URL = window.location.origin;
-}
-
-const API = "/api/signup"
-
+const API = "api/signup"
 
 export default function SignUp() {
     const router = useRouter()

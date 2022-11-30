@@ -10,8 +10,7 @@ import SignoutButton from "../../components/SignoutButton"
 import {findMatchUsers} from "../../library/mongodb"
 
 
-let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
-
+const FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
 
 export async function getServerSideProps({req , res, resolvedUrl} : any) {
   const url : string = resolvedUrl;
