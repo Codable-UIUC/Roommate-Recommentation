@@ -17,7 +17,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
         //res.setHeader(`Set-Cookie`,`token=deleted;expires=Thu, 01 Jan 1970 00:00:00 GMT;Domain=${domain};Path=/`)
         res.setHeader(`Set-Cookie`,`token=;Max-Age=0;Domain=${domain};Path=/`)
     
-        res.json({data : "success"})
+        res.status(200).json({data : "success"})
     })
             
 
