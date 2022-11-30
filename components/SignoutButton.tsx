@@ -2,18 +2,16 @@ import styles from "./NavBar.module.css";
 import { useState,useTransition} from "react";
 import { useRouter } from "next/router";
 
+let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
+const API = "api/signout"
 
 export default function SignoutButton({ children }: any) {
     const router = useRouter();
-  function handleClick () {
-    console.log("로그아웃 진행합니다")
-    console.log(document.cookie)
-    //document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
-
-    console.log(document.cookie)
-
-    //router.push('/')
+  async function handleClick () {
+    const res = await fetch(FRONT_URL + API)
+    const result = await res.json()
+    console.log(result.data)
+    router.push('/')
   }
 
 

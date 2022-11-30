@@ -39,6 +39,7 @@ const gg : () => string = () => {
 
 export default function Test() {
   async function handleClick() {
+    document.cookie = ""
     console.log(document.cookie)
     console.log(parseCookie(document.cookie))
     console.log(tt("하잉"))
