@@ -15,8 +15,6 @@ if (typeof window !== "undefined") {
 
 const API = "/api/signup"
 
-//const FRONT_URL = "http://localhost:3000/api/hello"
-// const FRONT_URL = "https://pet-finder-zeta.vercel.app//api/hello"
 
 export default function SignUp() {
     const router = useRouter()

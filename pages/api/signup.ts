@@ -26,7 +26,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 
         const token = createJWT({id})
         const max_age = 60 * 60 * 3;
-        const domain = process.env.NEXT_PUBLIC_FRONT_URL
+        const domain = process.env.NEXT_PUBLIC_FRONT_DOMAIN
         const path = '/'
 
         res.setHeader(`Set-Cookie`,`token=${token};Max-Age=${max_age};Domain=${domain};Path=${path}`)

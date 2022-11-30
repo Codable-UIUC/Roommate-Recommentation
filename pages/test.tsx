@@ -18,8 +18,6 @@ if (typeof window !== "undefined") {
   FRONT_URL = window.location.origin;
 }
 
-//const FRONT_URL = "http://localhost:3000/api/hello"
-// const FRONT_URL = "https://pet-finder-zeta.vercel.app//api/hello"
 
 export default function Test() {
   async function handleClick() {
