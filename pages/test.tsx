@@ -6,33 +6,14 @@ import { useState, useRef } from "react";
 import NavBar from "../components/NavBar";
 import RadioGroup from "../components/RadioGroup";
 
-<<<<<<< HEAD
-// export async function getStaticProps() {
-//   return {
-//     props: {}, // will be passed to the page component as props
-//   }
-// }
 
 let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
 
-if (typeof window !== "undefined") {
-  FRONT_URL = window.location.origin;
-}
-
-=======
-
-let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
-
->>>>>>> tmp
 
 export default function Test() {
   async function handleClick() {
     // setResult({loading:true,})
-<<<<<<< HEAD
-    await fetch(FRONT_URL + "/api/test", {
-=======
     await fetch(FRONT_URL + "api/test", {
->>>>>>> tmp
       method: "get",
     })
       .then(async (res) => {

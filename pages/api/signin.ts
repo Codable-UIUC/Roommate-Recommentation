@@ -26,17 +26,6 @@ const handler = nc<NextApiRequest, NextApiResponse>({
 
       
       const id = result;
-<<<<<<< HEAD
-      const token = createJWT({id});
-      const max_age = 60 * 60 * 3; // 3 hrs
-      const domain = process.env.NEXT_PUBLIC_FRONT_DOMAIN;
-      const path = "/";
-
-      res.setHeader(
-        `Set-Cookie`,
-        `token=${token};Max-Age=${max_age};Domain=${domain};Path=${path}`
-      );
-=======
       try {
         const token = createJWT({id});
         const max_age = 60 * 60 * 3; // 3 hrs
@@ -52,7 +41,6 @@ const handler = nc<NextApiRequest, NextApiResponse>({
       }
       
 
->>>>>>> tmp
 
       return res.json({data:"success"});
     });

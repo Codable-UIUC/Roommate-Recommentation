@@ -24,14 +24,6 @@ const handler = nc<NextApiRequest, NextApiResponse>({
         console.log(result)
         const id = result?.insertedId.toString();
 
-<<<<<<< HEAD
-        const token = createJWT({id})
-        const max_age = 60 * 60 * 3;
-        const domain = process.env.NEXT_PUBLIC_FRONT_DOMAIN
-        const path = '/'
-
-        res.setHeader(`Set-Cookie`,`token=${token};Max-Age=${max_age};Domain=${domain};Path=${path}`)
-=======
         try {
           const token = createJWT({id});
           const max_age = 60 * 60 * 3;
@@ -44,13 +36,8 @@ const handler = nc<NextApiRequest, NextApiResponse>({
           return res.status(404).end("Error while creating JWT");
         }
 
->>>>>>> tmp
         res.json({data : "success"})
     })
             
 
-<<<<<<< HEAD
     export default handler
-=======
-    export default handler
->>>>>>> tmp
