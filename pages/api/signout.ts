@@ -12,7 +12,7 @@ const handler = nc<NextApiRequest, NextApiResponse>({
       res.status(404).end("Page is not found");
     },
   })
-    .get(async (req, res) => {
+    .post(async (req, res) => {
         const domain = process.env.NEXT_PUBLIC_FRONT_DOMAIN;
         //res.setHeader(`Set-Cookie`,`token=deleted;expires=Thu, 01 Jan 1970 00:00:00 GMT;Domain=${domain};Path=/`)
         res.setHeader(`Set-Cookie`,`token=;Max-Age=0;Domain=${domain};Path=/`)

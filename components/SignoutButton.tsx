@@ -8,7 +8,7 @@ const API = "api/signout"
 export default function SignoutButton({ children }: any) {
     const router = useRouter();
   async function handleClick () {
-    const res = await fetch(FRONT_URL + API)
+    const res = await fetch(FRONT_URL + API,{method : 'POST'})
     const result = await res.json()
     console.log(result.data)
     router.push('/')
