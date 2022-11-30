@@ -5,26 +5,48 @@ import ParticlesWrapper from "../components/ParticlesWrapper";
 import { useState, useRef } from "react";
 import NavBar from "../components/NavBar";
 import RadioGroup from "../components/RadioGroup";
+import {parseCookie} from "../library/cookie"
+import { getEffectiveTypeParameterDeclarations } from "typescript";
 
 
 let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
 
 
+
+//Function overloading
+// function tt() : string;
+function tt(arg1 : string): string[]
+function tt(arg1 : string, arg2:string) : string[]
+function tt(arg1 : number) :number[]
+function tt(arg1 : number, arg2:number) : number[]
+
+function tt (arg1 :string|number , arg2? :string|number): (string|number)[]  {
+  if (arg1 == undefined ) {
+    arg1 = "바부"
+  } 
+  if (arg2 == undefined ) {
+    arg2 = "똥"
+  }
+
+  return [arg1, arg2]
+}
+
+const gg : () => string = () => {
+  return "hhi"
+}
+
+
+
 export default function Test() {
   async function handleClick() {
-    // setResult({loading:true,})
-    await fetch(FRONT_URL + "api/test", {
-      method: "get",
-    })
-      .then(async (res) => {
-        const result = await res.json();
-        console.log("결과값: " + result.status);
-        console.log("결과값: " + result.id);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    console.log(document.cookie)
+    console.log(parseCookie(document.cookie))
+    console.log(tt("하잉"))
+    console.log(tt('하잉','바붕'))
+    console.log(tt(1))
+    console.log(tt(1,3))
   }
+
   return (
     <>
         <div className={styles.container}>
