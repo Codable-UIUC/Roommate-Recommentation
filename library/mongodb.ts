@@ -135,7 +135,7 @@ export const matchExist = async (id: string) => {
   return true
 }
 
-export const insertMatch = async (id: string |undefined, array: string[], name : string) => {
+export const insertMatch = async (id: string |undefined, array: string[], name : string[]) => {
   logger.info({id, array, name},`insertMatch:: Exec (id, array, name)`)
   let result;
   const client = new MongoClient(URL);
@@ -143,22 +143,13 @@ export const insertMatch = async (id: string |undefined, array: string[], name :
   try {
     if (id == undefined)
       throw "id is undefined"
-    const idExist = await matchExist(id);
-    if (!idExist) {
-      console.log('insertMatch:: new match inserted')
-      result = await matchCollection.insertOne({
-        _id: new ObjectId(id),
-        match: array,
-        name : name
-      });
-    } else {
-      console.log('insertMatch:: replace the original match')
+
       result = await matchCollection.replaceOne({_id : new ObjectId(id)},{
         _id: new ObjectId(id),
         match: array,
         name : name
       },{upsert : true})
-    }
+    
   } catch (e) {
     console.log('error while insertMatch')
     console.log(e);
