@@ -13,6 +13,25 @@ import { findUser, findDetail } from "../library/mongodb";
 let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
 const API = "api/information";
 
+function isValid(array : any) {
+  if ( array == null) {
+    return false
+  }
+  for (let i = 0 ; i < 7; i++) {
+    if (typeof(array[i]) == "number") {
+      if (array[i] < 0) {
+        return false
+      }
+    } else {
+      if (array[i] == null || array[i] == undefined || array[i] == "") {
+        return false
+      }
+    }
+  }
+
+  return true
+}
+
 export async function getServerSideProps({ req, res }: any) {
   async function initialize() {
     console.log("Information Page::initialize - exec");
@@ -67,6 +86,7 @@ export async function getServerSideProps({ req, res }: any) {
 }
 
 export default function Information({ userInfo, detail }: any) {
+  console.log(userInfo)
   const router = useRouter();
 
   const [ageCategory, setAgeCategory] = useState(null);
@@ -77,17 +97,20 @@ export default function Information({ userInfo, detail }: any) {
   const [numberInvitation, setNumberInvitation] = useState<number | null>(null);
   const [favoriteFoodCategory, setFavoriteFoodCategory] = useState(null);
   const [schoolYear, setSchoolYear] = useState<any>(null);
-  const [religionCategory, setRelegionCategory] = useState<boolean>(false);
+  const [religionCategory, setRelegionCategory] = useState<number | null>(null);
   const [description, setDescription] = useState<string>("");
 
   const [disable, setDisable] = useState<boolean>(false);
 
   const [name, setName] = useState<string>("");
 
+  const [errorMessage, setErrorMessage] = useState<string|undefined>(undefined)
+
   function initialize() {
     setAgeCategory(userInfo.age);
     setMbti(userInfo.MBTI);
-    setMajorCategory(userInfo.sex);
+    setGender(userInfo.sex)
+    setMajorCategory(userInfo.major);
     setLifePattern(userInfo.m_n);
     setNumberInvitation(userInfo.friend);
     setFavoriteFoodCategory(userInfo.food);
@@ -110,7 +133,7 @@ export default function Information({ userInfo, detail }: any) {
   async function handleClick() {
     console.log("information handleClick()");
 
-    const json = JSON.stringify({
+    const information = {
       name,
       ageCategory,
       mbti,
@@ -122,7 +145,21 @@ export default function Information({ userInfo, detail }: any) {
       schoolYear,
       religionCategory,
       description,
-    });
+    }
+
+    if (!isValid(Object.values(information))) {
+      setErrorMessage("모든 값을 입력해주세요")
+      return 
+    }
+
+    if (description.length < 10) {
+      setErrorMessage("설명을 조금만 더 자세하게 적어주세요 (10글자 이상)")
+      return
+    }
+
+    setErrorMessage("잠시만 기다려주세요...")
+
+    const json = JSON.stringify(information);
 
     // setResult({loading:true,})
     await fetch(FRONT_URL + API, {
@@ -217,9 +254,9 @@ export default function Information({ userInfo, detail }: any) {
           onChange={(e) => {
             setNumberInvitation(parseInt(e.target.value));
           }}
-          placeholder="invite"
+          placeholder="# of invite"
           disabled={disable}
-          defaultValue={String(numberInvitation)}
+          defaultValue={numberInvitation?.toString()}
         />
 
         <br />
@@ -248,7 +285,7 @@ export default function Information({ userInfo, detail }: any) {
           setIndex={setRelegionCategory}
           name={"religion"}
           disabled={disable}
-          default_idx={Number(religionCategory)}
+          default_idx={religionCategory}
         />
 
         <label className={styles.question}>간단한 자기소개</label>
@@ -269,12 +306,9 @@ export default function Information({ userInfo, detail }: any) {
           Save{" "}
         </button>
         {/* <button onClick={test} disabled = {disable}> Test </button> */}
-
         <br />
+        <p style={{fontWeight : 'bold'}}>{errorMessage}</p>
 
-        {/* <Link href="/">
-              <h1>홈으로</h1>
-            </Link> */}
       </main>
 
       {/* <footer className={styles.footer}>

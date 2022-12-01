@@ -42,7 +42,7 @@ export default function Home() {
         <button>결과 보러가기</button>
         </Link> : null} 
         <Link href="/signin">
-          <button>login</button>
+          <button>Sign In</button>
         </Link>
         <Link href="/signup">
           <button>Sign Up</button>

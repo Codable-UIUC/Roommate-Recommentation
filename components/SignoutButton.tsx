@@ -9,15 +9,13 @@ export default function SignoutButton({ children }: any) {
     const router = useRouter();
   async function handleClick () {
     const res = await fetch(FRONT_URL + API,{method : 'POST'})
-    const result = await res.json()
-    console.log(result.data)
     router.push('/')
   }
 
 
   return (
-    <div>
-      <button onClick={handleClick}>Sign Out</button>
-    </div>
+    <button className={"Button"} onClick={handleClick}>
+      Sign Out
+    </button>
   );
 }

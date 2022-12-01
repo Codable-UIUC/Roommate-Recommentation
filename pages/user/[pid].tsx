@@ -33,9 +33,16 @@ export async function getServerSideProps({req , res, resolvedUrl} : any) {
   }
 
   const contents = result.map((elem : any) => {
-    if (elem.content == undefined || elem == undefined)
-      elem.content = "empty descripttion"
-    return {id : elem._id.toString(), content: elem.content}
+    console.log(elem)
+    if (elem == undefined) {
+      elem.content = "emty description"
+      elem.name = "no name"
+    } else if (elem.content == undefined)
+      elem.content = "empty description" 
+    else if (elem.name == undefined)
+      elem.name = "no name"
+
+    return {id : elem._id.toString(), content: elem.content, name : elem.name}
   })
   
   console.log(contents)
@@ -50,15 +57,15 @@ export default function ID({contents} : any) {
   const router = useRouter();
   const {pid}: any = router.query
   
-  
+  const colors = ['#FFD700','#C0C0C0','#CD7F32']
 
   const map = ()=> {
     const yo = contents.map((e : any, index : number)=> {
       return (
-        <div key = {e.id} className = 'card'>
-          <h1>{`${index + 1} 등`}</h1>
+        <div key = {e.id} className = 'card' onClick={handleClickMatch}>
+          <h1><span style={{color:colors[index], fontSize:38 - 3*index}}>{`♛ ${index + 1} 등`}</span> {e.name}</h1>
 
-           <h1>{e.content}</h1>
+           <h2>{e.content}</h2>
         </div>
       )
     })
@@ -66,9 +73,8 @@ export default function ID({contents} : any) {
     return yo
   }
 
-  async function handleClickMatch () {
-    
-    //console.log(result)
+  function handleClickMatch () {
+    alert('준비중입니다')
   }
 
   return (
@@ -81,17 +87,17 @@ export default function ID({contents} : any) {
       <main className={styles.main}>
         <NavBar />
 
-        <div>
+        
         <h1>안녕하세요! {pid} 님</h1>
-        <h2>당신과 가장 잘 어울리는 룸메이트는</h2>
+        <h2>당신과 가장 잘 어울리는 룸메이트는?</h2>
 
-        {contents.length == 0 ? <h2>아래 버튼을 클릭하여 정보를 입력해주세요</h2> : null}
-        </div>
+        {contents.length == 0 ? <h2>아직 내 정보를 입력하지 않았습니다. 아래 버튼을 클릭하여 정보를 입력해주세요</h2> : null}
+        
 
         {map()}
 
         <Link href="/information">
-          <button>내 정보</button>
+          <button>{contents.length == 0 ? "내 정보 입력" : "내 정보 수정"}</button>
         </Link>
 
         <SignoutButton/>

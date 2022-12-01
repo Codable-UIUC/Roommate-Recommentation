@@ -85,10 +85,10 @@ export const insertDetail = async (id : string|undefined, detail : string) => {
   const detailCollection = client.db(DB).collection(DETAIL);
 
   try {
-    result = await detailCollection.insertOne({
+    result = await detailCollection.replaceOne({_id : new ObjectId(id)},{
       _id : new ObjectId(id),
       content : detail
-    })
+    },{upsert:true})
 
     
   } catch (e) {
@@ -196,6 +196,18 @@ export const findMatchUsers = async (id: string) => {
      await detailCollection.find({_id: {$in :query_strings}}).forEach((doc) => {
       users.push(doc)
     });
+
+    for (let i = 0 ; i< users.length; i++) {
+      const corres_idx = result?.match.findIndex((e : string) => {
+    
+        return users[i]._id.toString() == e
+      } )
+     
+      
+      users[i].name = result.name[corres_idx]
+     
+    }
+
   } catch (e) {
     logger.error("findMatchUsers:: Catch Error")
     await client.close();
@@ -239,21 +251,23 @@ export const verifyPassword = async (email:string, password:string) => {
 }
 
 export const findUser = async (id : string) => {
-  console.log("findUser::Exec - id" + id)
+  logger.info({id}, "findUser::Exec - id")
   let result;
   const client = new MongoClient(URL);
   const userCollection = client.db(DB).collection(USER);
   result = await userCollection.findOne({_id : new ObjectId(id)})
+  logger.info({result}, "findUser::result is")
   client.close();
   return result;
 }
 
 export const findDetail = async (id : string) => {
-  console.log("findDetail::Exec - id" + id)
+  logger.info({id}, "findDetail::Exec - id")
   let result
   const client = new MongoClient(URL);
   const detailCollection = client.db(DB).collection(DETAIL);
   result = await detailCollection.findOne({_id : new ObjectId(id)})
+  logger.info({result}, "findDetail::Result is")
   client.close();
   return result
 }
