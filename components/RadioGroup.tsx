@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction } from 'react'
 import styles from './NavBar.module.css'
 
 export default function RadioGroup({stringArray, setIndex, name, disabled , default_idx }: 
-  {stringArray : string[], setIndex : any, name: string, disabled : boolean, default_idx : number | null}) {
+  {stringArray : string[], setIndex? : any, name: string, disabled : boolean, default_idx : number | null}) {
     const radios = stringArray.map((val,index,a) => {
         return(
         <div key={val} >

@@ -14,6 +14,7 @@ let FRONT_URL = process.env.NEXT_PUBLIC_FRONT_URL;
 export default function Home() {
   const router = useRouter()
   const [id, setId] = useState("")
+  
 
 
   useEffect(()=> {
@@ -37,7 +38,6 @@ export default function Home() {
       </Head>
       <main className={styles.main}>
         <NavBar />
-        <h1>홈페이지 입니다.</h1>
         {id ? <Link href = {`/user/${id}`}>
         <button>결과 보러가기</button>
         </Link> : null} 

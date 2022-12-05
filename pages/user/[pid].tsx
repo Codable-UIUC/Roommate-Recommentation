@@ -62,7 +62,7 @@ export default function ID({contents} : any) {
   const map = ()=> {
     const yo = contents.map((e : any, index : number)=> {
       return (
-        <div key = {e.id} className = 'card' onClick={handleClickMatch}>
+        <div key = {e.id} className = 'card' onClick={()=>handleClickMatch(e.id)}>
           <h1><span style={{color:colors[index], fontSize:38 - 3*index}}>{`♛ ${index + 1} 등`}</span> {e.name}</h1>
 
            <h2>{e.content}</h2>
@@ -73,8 +73,8 @@ export default function ID({contents} : any) {
     return yo
   }
 
-  function handleClickMatch () {
-    alert('준비중입니다')
+  function handleClickMatch (id : string) {
+    router.push('/info/'+id)
   }
 
   return (
@@ -90,6 +90,7 @@ export default function ID({contents} : any) {
         
         <h1>안녕하세요! {pid} 님</h1>
         <h2>당신과 가장 잘 어울리는 룸메이트는?</h2>
+        <h4>더 자세히 보려면 카드를 터치해보세요</h4>
 
         {contents.length == 0 ? <h2>아직 내 정보를 입력하지 않았습니다. 아래 버튼을 클릭하여 정보를 입력해주세요</h2> : null}
         
