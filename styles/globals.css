@@ -24,6 +24,7 @@ a {
   box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
   transition: 0.3s;
   max-width: 300px;
+  min-width: 300px;
   margin-bottom: 10px;
   text-align: center;
 }
@@ -32,6 +33,9 @@ a {
 .card:hover {
   box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
   cursor :pointer;
+  border:4px solid rgb(218, 130, 22);
+  max-width: 310px;
+  min-width: 310px;
 }
 
 button {
